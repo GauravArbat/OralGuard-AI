@@ -66,7 +66,7 @@ class OralLesionClassifier(nn.Module):
         if timm is not None:
             self.backbone = timm.create_model(
                 "efficientnet_b4",
-                pretrained=True,
+                pretrained=False,
                 num_classes=0,  # Remove classifier head
                 global_pool="avg",
             )

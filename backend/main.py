@@ -36,14 +36,8 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Database ready")
 
-    # Load AI models (lazy load on first request if DEBUG)
-    if not settings.DEBUG:
-        logger.info("Pre-loading AI models...")
-        from ai.pipeline import inference_pipeline
-        inference_pipeline.load_all_models()
-        logger.info("AI models loaded")
-    else:
-        logger.info("DEBUG mode: AI models will lazy-load on first request")
+    # Load AI models lazily on first request to conserve memory
+    logger.info("AI models will lazy-load on first request")
 
     yield
 
