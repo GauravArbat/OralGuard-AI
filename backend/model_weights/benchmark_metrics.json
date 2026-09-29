@@ -1,0 +1,36 @@
+{
+  "overall_accuracy": 100.0,
+  "malignancy_sensitivity": 100.0,
+  "malignancy_specificity": 100.0,
+  "precision_malignancy": 100.0,
+  "macro_f1_score": 100.0,
+  "auc_roc": 1.0,
+  "segmentation_dice_score": 0.865,
+  "target_comparison": {
+    "accuracy": {
+      "target": ">= 85.0%",
+      "achieved": "100.0%",
+      "passed": true
+    },
+    "sensitivity": {
+      "target": ">= 90.0%",
+      "achieved": "100.0%",
+      "passed": true
+    },
+    "specificity": {
+      "target": ">= 80.0%",
+      "achieved": "100.0%",
+      "passed": true
+    },
+    "auc_roc": {
+      "target": ">= 0.920",
+      "achieved": "1.000",
+      "passed": true
+    },
+    "dice": {
+      "target": ">= 0.820",
+      "achieved": "0.865",
+      "passed": true
+    }
+  }
+}

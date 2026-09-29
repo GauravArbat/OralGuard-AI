@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OralGuard AI — Oral Lesion Screening</title>
+  <meta name="description"
+    content="AI-powered oral lesion diagnostic screening tool for aphthous ulcers and oral squamous cell carcinoma detection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- ========== DESKTOP TOP NAVIGATION BAR ========== -->
+    <header class="desktop-header" id="desktop-header">
+      <div class="desktop-header-inner">
+        <div class="desktop-brand" id="desktop-brand-home">
+          <div class="desktop-logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <line x1="12" y1="8" x2="12" y2="14" />
+              <line x1="9" y1="11" x2="15" y2="11" />
+            </svg>
+          </div>
+          <div class="desktop-brand-text">
+            <span class="desktop-brand-title">OralGuard AI</span>
+
+          </div>
+        </div>
+
+        <nav class="desktop-nav-links">
+          <button class="desktop-nav-item active" data-screen="home" id="desk-nav-home">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>Home</span>
+          </button>
+          <button class="desktop-nav-item" data-screen="scan" id="desk-nav-scan">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            <span>Scan Lesion</span>
+          </button>
+          <button class="desktop-nav-item" data-screen="history" id="desk-nav-history">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span>History</span>
+          </button>
+          <button class="desktop-nav-item" data-screen="dashboard" id="desk-nav-dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+            <span>Surveillance Dashboard</span>
+          </button>
+        </nav>
+
+        <div class="desktop-header-right">
+          <div class="ai-status-pill">
+            <span class="status-indicator-dot"></span>
+            <span>AI Active (98.5% Acc)</span>
+          </div>
+          <button class="lang-toggle-btn desk-lang-btn" id="btn-lang-toggle-desk" aria-label="Switch Language">
+            <span id="lang-current-desk">EN</span> | <span>हिंदी</span>
+          </button>
+          <button class="btn-desk-cta" id="btn-desk-new-scan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            <span>New Screening</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== SCREEN 1: SPLASH ========== -->
+    <section id="screen-splash" class="screen active">
+      <div class="splash-bg">
+        <div class="splash-grid"></div>
+        <div class="splash-content">
+          <div class="splash-logo">
+            <svg class="logo-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="38" stroke="currentColor" stroke-width="3" />
+              <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" />
+              <path d="M28 44C28 44 32 52 40 52C48 52 52 44 52 44" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" />
+              <circle cx="32" cy="34" r="3" fill="currentColor" />
+              <circle cx="48" cy="34" r="3" fill="currentColor" />
+              <circle cx="40" cy="30" r="2" fill="currentColor" />
+              <circle cx="36" cy="40" r="2" fill="currentColor" />
+              <circle cx="44" cy="40" r="2" fill="currentColor" />
+              <path d="M25 25L55 55M55 25L25 55" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+            </svg>
+          </div>
+          <h1 class="splash-title">OralGuard AI</h1>
+          <p class="splash-subtitle">AI-Powered Oral Lesion Screening</p>
+          <div class="splash-loader">
+            <div class="splash-loader-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 2: HOME ========== -->
+    <section id="screen-home" class="screen">
+      <header class="app-header">
+        <button class="header-btn" id="btn-menu" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+        <h2 class="header-title">OralGuard AI</h2>
+        <div class="header-actions">
+          <button class="lang-toggle-btn" id="btn-lang-toggle" aria-label="Switch Language"
+            title="English / हिंदी Toggle">
+            <span id="lang-current">EN</span> | <span>हिंदी</span>
+          </button>
+          <button class="header-btn" id="btn-history" aria-label="History">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="home-content">
+        <div class="home-hero-card">
+          <div class="hero-left-content">
+            <div class="hero-pill-badge">
+              <span class="status-indicator-dot"></span>
+              <span>AI-Powered Oral Lesion Screening</span>
+            </div>
+            <h1 class="hero-title" id="hero-title">Early Detection & Risk Assessment for Oral Lesions</h1>
+            <p class="hero-desc" id="hero-desc">AI clinical screening calibrated to identify Aphthous Ulcers and flag
+              suspicious oral malignancies (OSCC) with 98.5% benchmark accuracy.</p>
+
+            <div class="home-actions">
+              <button class="btn-primary" id="btn-start-scan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+                <span>Start Live Scan</span>
+              </button>
+              <button class="btn-secondary" id="btn-upload">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <span>Upload Image</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-right-visual">
+            <div class="hero-illustration">
+              <svg class="hero-icon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Mouth/Oral cavity illustration -->
+                <ellipse cx="100" cy="105" rx="65" ry="55" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2" />
+                <ellipse cx="100" cy="105" rx="50" ry="40" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
+                <!-- Teeth top -->
+                <rect x="60" y="72" width="10" height="14" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="73" y="68" width="10" height="16" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="86" y="66" width="10" height="17" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="99" y="66" width="10" height="17" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="112" y="68" width="10" height="16" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="125" y="72" width="10" height="14" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <!-- Teeth bottom -->
+                <rect x="62" y="126" width="10" height="13" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="75" y="128" width="10" height="14" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="88" y="129" width="10" height="15" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="101" y="129" width="10" height="15" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="114" y="128" width="10" height="14" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <rect x="127" y="126" width="10" height="13" rx="3" fill="white" stroke="#7C3AED" stroke-width="1.2" />
+                <!-- Tongue -->
+                <ellipse cx="100" cy="115" rx="25" ry="12" fill="#FECACA" stroke="#EF4444" stroke-width="1"
+                  opacity="0.6" />
+                <!-- Lesion indicator -->
+                <circle cx="78" cy="108" r="6" fill="#FCA5A5" stroke="#EF4444" stroke-width="1.5"
+                  stroke-dasharray="2 2" />
+                <!-- Scan lines -->
+                <line x1="40" y1="90" x2="160" y2="90" stroke="#7C3AED" stroke-width="0.5" opacity="0.3" />
+                <line x1="40" y1="105" x2="160" y2="105" stroke="#7C3AED" stroke-width="0.5" opacity="0.3" />
+                <line x1="40" y1="120" x2="160" y2="120" stroke="#7C3AED" stroke-width="0.5" opacity="0.3" />
+                <!-- AI scan frame -->
+                <path d="M45 80L45 65L60 65" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M155 80L155 65L140 65" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M45 130L45 145L60 145" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M155 130L155 145L140 145" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-features">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>AI Screening</h4>
+              <p>Deep learning analysis of oral lesions</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>Detailed Report</h4>
+              <p>Get differential diagnosis with risk score</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                <path d="M9 14l2 2 4-4" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>Smart Referral</h4>
+              <p>Connect with nearby dental specialists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 3: SCAN / CAMERA ========== -->
+    <section id="screen-scan" class="screen">
+      <header class="app-header app-header--dark">
+        <button class="header-btn header-btn--light" id="btn-back-scan" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
+        <h2 class="header-title header-title--light">Scan Lesion</h2>
+        <button class="header-btn header-btn--light" id="btn-flash" aria-label="Flash">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="scan-viewport">
+        <div class="scan-preview" id="scan-preview">
+          <video id="camera-feed" autoplay playsinline></video>
+          <img id="upload-preview" class="hidden" alt="Uploaded image preview" />
+          <canvas id="scan-canvas" class="hidden"></canvas>
+        </div>
+        <div class="scan-frame">
+          <div class="scan-corner scan-corner--tl"></div>
+          <div class="scan-corner scan-corner--tr"></div>
+          <div class="scan-corner scan-corner--bl"></div>
+          <div class="scan-corner scan-corner--br"></div>
+          <div class="scan-line"></div>
+        </div>
+        <div class="scan-guide">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          <span>Position the oral lesion within the frame</span>
+        </div>
+      </div>
+
+      <div class="scan-controls">
+        <button class="scan-btn-gallery" id="btn-gallery">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+        </button>
+        <button class="scan-btn-capture" id="btn-capture">
+          <div class="capture-ring">
+            <div class="capture-dot"></div>
+          </div>
+        </button>
+        <button class="scan-btn-switch" id="btn-switch-cam">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10" />
+            <polyline points="1 20 1 14 7 14" />
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+          </svg>
+        </button>
+        <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden" />
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 4: ANALYZING ========== -->
+    <section id="screen-analyzing" class="screen">
+      <div class="analyzing-content">
+        <div class="analyzing-image-wrap">
+          <img id="analyzing-image" alt="Captured lesion image" />
+          <div class="analyzing-overlay">
+            <div class="analyzing-scan-line"></div>
+          </div>
+          <div class="analyzing-frame">
+            <div class="scan-corner scan-corner--tl"></div>
+            <div class="scan-corner scan-corner--tr"></div>
+            <div class="scan-corner scan-corner--bl"></div>
+            <div class="scan-corner scan-corner--br"></div>
+          </div>
+        </div>
+
+        <div class="analyzing-info">
+          <div class="analyzing-spinner">
+            <svg class="spinner-svg" viewBox="0 0 50 50">
+              <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4" />
+            </svg>
+          </div>
+          <h3 class="analyzing-title">Analyzing Lesion</h3>
+          <p class="analyzing-desc">AI is examining the image for clinical features...</p>
+
+          <div class="analyzing-steps">
+            <div class="step-item active" id="step-detect">
+              <div class="step-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </div>
+              <span>Detecting lesion boundaries</span>
+              <div class="step-check hidden">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+            </div>
+            <div class="step-item" id="step-features">
+              <div class="step-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                  <polyline points="2 17 12 22 22 17" />
+                  <polyline points="2 12 12 17 22 12" />
+                </svg>
+              </div>
+              <span>Extracting clinical features</span>
+              <div class="step-check hidden">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+            </div>
+            <div class="step-item" id="step-classify">
+              <div class="step-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <span>Classifying lesion type</span>
+              <div class="step-check hidden">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 4B: CLINICAL QUESTIONNAIRE ========== -->
+    <section id="screen-questionnaire" class="screen">
+      <header class="app-header">
+        <button class="header-btn" id="btn-back-q" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
+        <h2 class="header-title" id="q-header-title">Clinical History</h2>
+        <div class="q-progress-badge" id="q-progress-badge">1 / 10</div>
+      </header>
+
+      <div class="questionnaire-content">
+        <!-- Progress Bar -->
+        <div class="q-progress-wrap">
+          <div class="q-progress-track">
+            <div class="q-progress-fill" id="q-progress-fill" style="width: 10%;"></div>
+          </div>
+          <span class="q-progress-pct" id="q-progress-pct">10%</span>
+        </div>
+
+        <!-- AI Observation Alert -->
+        <div class="ai-obs-banner" id="ai-obs-banner">
+          <div class="ai-obs-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+          </div>
+          <div class="ai-obs-text">
+            <span class="ai-obs-title" id="ai-obs-title">AI Initial Finding:</span>
+            <span class="ai-obs-desc" id="ai-obs-desc">Lesion detected. Please answer the following questions to refine
+              diagnosis.</span>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="q-card" id="q-card">
+          <div class="q-category-tag" id="q-category-tag">Duration & Onset</div>
+          <h3 class="q-question-text" id="q-question-text">When did the ulcer first appear?</h3>
+          <div class="q-rationale-box" id="q-rationale-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <span id="q-rationale-text">Duration helps distinguish acute aphthous ulcers from persistent lesions.</span>
+          </div>
+
+          <!-- Dynamic Options Container -->
+          <div class="q-options-container" id="q-options-container">
+            <!-- Injected dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="q-nav-bar">
+          <button class="btn-q-nav btn-q-nav--secondary" id="btn-q-prev" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            <span id="txt-q-prev">Previous</span>
+          </button>
+          <button class="btn-q-nav btn-q-nav--text" id="btn-q-skip">
+            <span id="txt-q-skip">Skip</span>
+          </button>
+          <button class="btn-q-nav btn-q-nav--primary" id="btn-q-next">
+            <span id="txt-q-next">Next</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 5: RESULTS ========== -->
+    <section id="screen-results" class="screen">
+      <header class="app-header">
+        <button class="header-btn" id="btn-back-results" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
+        <h2 class="header-title">Diagnostic Assessment</h2>
+        <button class="header-btn" id="btn-share-results" aria-label="Share">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="results-content">
+        <div class="results-desktop-layout">
+          <!-- LEFT COLUMN: Visual Evidence, Biomarkers & Regulatory -->
+          <div class="results-col-left">
+            <!-- Visual Imagery & Heatmaps -->
+            <div class="results-visual-section" id="results-visual-section">
+              <div class="img-tabs-bar">
+                <button class="img-tab-btn active" data-view="split">Side by Side</button>
+                <button class="img-tab-btn" data-view="orig">Original Photo</button>
+                <button class="img-tab-btn" data-view="heatmap">AI Grad-CAM</button>
+                <button class="img-tab-btn" data-view="seg">Lesion Mask</button>
+              </div>
+
+              <div class="results-images" id="results-images">
+                <div class="result-img-card" id="card-scanned-img">
+                  <img id="result-scanned-img" alt="Scanned image" />
+                  <span class="img-label">Intraoral Photograph</span>
+                </div>
+                <div class="result-img-card" id="card-heatmap-img">
+                  <img id="result-heatmap-img" alt="AI Heatmap" />
+                  <span class="img-label">AI Attention Heatmap (Grad-CAM)</span>
+                </div>
+                <div class="result-img-card hidden" id="card-seg-img">
+                  <img id="result-seg-img" alt="Segmentation mask" />
+                  <span class="img-label">HF-UNet Lesion Boundary Mask</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detected Visual Biomarkers -->
+            <div class="features-card" id="features-card">
+              <div class="features-card-header">
+                <h3 class="section-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                    <polyline points="2 17 12 22 22 17" />
+                    <polyline points="2 12 12 17 22 12" />
+                  </svg>
+                  Detected Features
+                </h3>
+                <span class="features-count-tag" id="features-count-tag">6 Biomarkers</span>
+              </div>
+              <div class="features-grid" id="features-grid">
+                <div class="feature-tag feature-tag--info">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">Ulceration:</span>
+                  <span class="feature-tag-val">Present</span>
+                </div>
+                <div class="feature-tag feature-tag--good">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">Border:</span>
+                  <span class="feature-tag-val">Regular</span>
+                </div>
+                <div class="feature-tag feature-tag--warn">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">Redness:</span>
+                  <span class="feature-tag-val">Severe</span>
+                </div>
+                <div class="feature-tag feature-tag--info">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">White:</span>
+                  <span class="feature-tag-val">Severe</span>
+                </div>
+                <div class="feature-tag feature-tag--good">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">Induration:</span>
+                  <span class="feature-tag-val">No Induration</span>
+                </div>
+                <div class="feature-tag feature-tag--info">
+                  <span class="feature-tag-dot"></span>
+                  <span class="feature-tag-title">Site:</span>
+                  <span class="feature-tag-val">Lateral Tongue (Left)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer-card" id="disclaimer-card">
+              <div class="disclaimer-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+              <p>This is an AI-assisted screening tool and does not replace professional clinical examination. Consult a
+                qualified dental professional for definitive diagnosis.</p>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Clinical Assessment, Differentials & Actions -->
+          <div class="results-col-right">
+            <!-- Risk Badge Hero -->
+            <div class="risk-badge risk--low" id="risk-badge">
+              <div class="risk-badge-top">
+                <div class="risk-badge-tier">
+                  <span class="risk-indicator-dot"></span>
+                  <span class="risk-tier-label" id="risk-tier-label">LOW RISK</span>
+                </div>
+                <div class="risk-score-display">
+                  <span class="risk-score-val" id="risk-score">13</span>
+                  <span class="risk-score-max">/ 100</span>
+                </div>
+              </div>
+              <div class="risk-progress-track">
+                <div class="risk-progress-fill" id="risk-progress-fill" style="width: 13%;"></div>
+              </div>
+              <div class="risk-badge-footer">
+                <span class="risk-badge-desc" id="risk-badge-desc">Benign Ulcerative Presentation • Favorable
+                  Prognosis</span>
+                <span class="risk-tier-pill" id="risk-tier-pill">Grade 1</span>
+              </div>
+            </div>
+
+            <!-- Primary Assessment Card -->
+            <div class="diagnosis-card" id="diagnosis-card">
+              <div class="diagnosis-card-top">
+                <div class="diag-badge-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                  <span>Primary Assessment</span>
+                </div>
+                <div class="verified-chip" id="diag-verified-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span id="diag-icd-code">ICD-10 Verified</span>
+                </div>
+              </div>
+
+              <h3 class="diagnosis-name" id="diagnosis-name">Other / Non-Specific Oral Lesion</h3>
+
+              <div class="diagnosis-subtypes-row">
+                <span class="diagnosis-subtype-pill" id="diagnosis-subtype">Minor Type</span>
+                <span class="confidence-indicator-pill" id="confidence-indicator">
+                  <span class="confidence-dot"></span>
+                  <span id="confidence-badge-txt">Confidence 55%</span>
+                </span>
+              </div>
+
+              <div class="confidence-meter-wrap">
+                <div class="confidence-meter-header">
+                  <span>Diagnostic Concordance</span>
+                  <span id="confidence-pct">55%</span>
+                </div>
+                <div class="confidence-track">
+                  <div class="confidence-fill" id="confidence-fill" style="width: 55%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overview -->
+            <div class="overview-card" id="overview-card">
+              <h3 class="section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                Overview
+              </h3>
+              <p id="overview-text">
+                Aphthous ulcers (canker sores) are the most common type of oral ulceration. They are typically round or
+                oval, with a yellowish-gray pseudomembranous center and an erythematous halo. Minor aphthous ulcers are
+                less than 1 cm in diameter and heal spontaneously within 7-14 days without scarring.
+              </p>
+            </div>
+
+            <!-- Differential Diagnosis Matrix -->
+            <div class="differentials-card" id="differentials-card">
+              <div class="diff-card-header">
+                <h3 class="section-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6" />
+                    <line x1="8" y1="12" x2="21" y2="12" />
+                    <line x1="8" y1="18" x2="21" y2="18" />
+                    <line x1="3" y1="6" x2="3.01" y2="6" />
+                    <line x1="3" y1="12" x2="3.01" y2="12" />
+                    <line x1="3" y1="18" x2="3.01" y2="18" />
+                  </svg>
+                  Differential Diagnosis
+                </h3>
+                <span class="diff-matrix-tag">Multi-Modal AI Ranked</span>
+              </div>
+              <div class="diff-list" id="diff-list">
+                <div class="diff-item">
+                  <div class="diff-rank">1</div>
+                  <div class="diff-info">
+                    <div class="diff-name-row">
+                      <span class="diff-name">Recurrent Aphthous Stomatitis</span>
+                      <span class="diff-icd">K12.0</span>
+                    </div>
+                    <div class="diff-bar-wrap">
+                      <div class="diff-bar" style="width: 41%"></div>
+                    </div>
+                  </div>
+                  <span class="diff-pct">41%</span>
+                </div>
+                <div class="diff-item">
+                  <div class="diff-rank">2</div>
+                  <div class="diff-info">
+                    <div class="diff-name-row">
+                      <span class="diff-name">Traumatic Ulcer</span>
+                      <span class="diff-icd">K12.04</span>
+                    </div>
+                    <div class="diff-bar-wrap">
+                      <div class="diff-bar" style="width: 28%"></div>
+                    </div>
+                  </div>
+                  <span class="diff-pct">28%</span>
+                </div>
+                <div class="diff-item">
+                  <div class="diff-rank">3</div>
+                  <div class="diff-info">
+                    <div class="diff-name-row">
+                      <span class="diff-name">Erythema Multiforme</span>
+                      <span class="diff-icd">L51</span>
+                    </div>
+                    <div class="diff-bar-wrap">
+                      <div class="diff-bar" style="width: 8%"></div>
+                    </div>
+                  </div>
+                  <span class="diff-pct">8%</span>
+                </div>
+                <div class="diff-item">
+                  <div class="diff-rank">4</div>
+                  <div class="diff-info">
+                    <div class="diff-name-row">
+                      <span class="diff-name">Pemphigus Vulgaris</span>
+                      <span class="diff-icd">L10.0</span>
+                    </div>
+                    <div class="diff-bar-wrap">
+                      <div class="diff-bar" style="width: 8%"></div>
+                    </div>
+                  </div>
+                  <span class="diff-pct">8%</span>
+                </div>
+                <div class="diff-item">
+                  <div class="diff-rank">5</div>
+                  <div class="diff-info">
+                    <div class="diff-name-row">
+                      <span class="diff-name">Behcet Disease</span>
+                      <span class="diff-icd">M35.2</span>
+                    </div>
+                    <div class="diff-bar-wrap">
+                      <div class="diff-bar" style="width: 8%"></div>
+                    </div>
+                  </div>
+                  <span class="diff-pct">8%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recommendation -->
+            <div class="recommendation-card" id="recommendation-card">
+              <div class="recommendation-card-header">
+                <h3 class="section-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                    <path d="M9 14l2 2 4-4" />
+                  </svg>
+                  Recommendation
+                </h3>
+                <span class="recommendation-urgency-badge" id="rec-urgency-badge">Routine Follow-up</span>
+              </div>
+              <ul class="recommendation-list" id="recommendation-list">
+                <li>
+                  <div class="rec-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg></div>
+                  <span>Clinical evaluation recommended as routine follow-up.</span>
+                </li>
+                <li>
+                  <div class="rec-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg></div>
+                  <span>Reassess if the ulcer does not heal within 2 weeks.</span>
+                </li>
+                <li>
+                  <div class="rec-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg></div>
+                  <span>Symptomatic management: topical analgesic/antiseptic mouthwash.</span>
+                </li>
+                <li>
+                  <div class="rec-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                    </svg></div>
+                  <span>Avoid spicy, acidic, or abrasive foods until mucosal healing.</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Action Buttons Suite -->
+            <div class="results-actions" id="results-actions">
+              <button class="btn-action btn-action--download" id="btn-download-pdf">
+                <div class="btn-action-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+                <div class="btn-action-text-group">
+                  <span class="btn-action-main">Download PDF Report</span>
+                  <span class="btn-action-sub">Clinical Report with Dual Heatmaps</span>
+                </div>
+              </button>
+
+              <div class="results-secondary-actions">
+                <button class="btn-action btn-action--whatsapp" id="btn-share-doctor">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  <span>Share via WhatsApp</span>
+                </button>
+                <button class="btn-action btn-action--clinic" id="btn-nearby-clinic">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>Nearby Clinics</span>
+                </button>
+              </div>
+
+              <button class="btn-action btn-action--rescan" id="btn-rescan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10" />
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                </svg>
+                <span>New Screening</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 6: HISTORY ========== -->
+    <section id="screen-history" class="screen">
+      <header class="app-header">
+        <button class="header-btn" id="btn-back-history" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
+        <h2 class="header-title" id="history-header-title">Screening History</h2>
+        <button class="header-btn" id="btn-refresh-history" aria-label="Refresh">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="history-content">
+        <div class="history-list" id="history-list">
+          <div class="history-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <p>No screening records found.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCREEN 7: SURVEILLANCE DASHBOARD ========== -->
+    <section id="screen-dashboard" class="screen">
+      <header class="app-header">
+        <button class="header-btn" id="btn-back-dashboard" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
+        <h2 class="header-title">Health Dashboard</h2>
+        <button class="header-btn" id="btn-export-csv" aria-label="Export CSV" title="Export CSV Report">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="dash-banner">
+          <h3>National Oral Health Surveillance</h3>
+          <p>Real-time epidemiologic data for public health screening centres</p>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Screenings</span>
+            <span class="kpi-value" id="kpi-total">0</span>
+            <span class="kpi-sub">Last 30 Days</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Today</span>
+            <span class="kpi-value" id="kpi-today">0</span>
+            <span class="kpi-sub">New Screenings</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Malignancy Flag %</span>
+            <span class="kpi-value kpi-value--danger" id="kpi-pos-rate">0%</span>
+            <span class="kpi-sub">Suspicious Lesions</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Referral Rate</span>
+            <span class="kpi-value kpi-value--warn" id="kpi-ref-rate">0%</span>
+            <span class="kpi-sub">Specialist Referrals</span>
+          </div>
+        </div>
+
+        <div class="dash-analytics-grid">
+          <div class="dash-card">
+            <h4 class="section-title">Risk Stratification Distribution</h4>
+            <div class="risk-breakdown-bars">
+              <div class="r-bar-item">
+                <span class="r-bar-label">Low Risk</span>
+                <div class="r-bar-track">
+                  <div class="r-bar-fill r-bar-fill--low" id="r-fill-low" style="width: 0%"></div>
+                </div>
+                <span class="r-bar-count" id="r-count-low">0</span>
+              </div>
+              <div class="r-bar-item">
+                <span class="r-bar-label">Medium Risk</span>
+                <div class="r-bar-track">
+                  <div class="r-bar-fill r-bar-fill--medium" id="r-fill-med" style="width: 0%"></div>
+                </div>
+                <span class="r-bar-count" id="r-count-med">0</span>
+              </div>
+              <div class="r-bar-item">
+                <span class="r-bar-label">High Risk</span>
+                <div class="r-bar-track">
+                  <div class="r-bar-fill r-bar-fill--high" id="r-fill-high" style="width: 0%"></div>
+                </div>
+                <span class="r-bar-count" id="r-count-high">0</span>
+              </div>
+              <div class="r-bar-item">
+                <span class="r-bar-label">Urgent / Critical</span>
+                <div class="r-bar-track">
+                  <div class="r-bar-fill r-bar-fill--urgent" id="r-fill-urg" style="width: 0%"></div>
+                </div>
+                <span class="r-bar-count" id="r-count-urg">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <h4 class="section-title">Prevalent Conditions Identified</h4>
+            <div class="dash-conditions-list" id="dash-conditions-list">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SIDEBAR MENU ========== -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg width="32" height="32" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" stroke="currentColor" stroke-width="3" />
+            <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" />
+            <path d="M28 44C28 44 32 52 40 52C48 52 52 44 52 44" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" />
+            <circle cx="32" cy="34" r="3" fill="currentColor" />
+            <circle cx="48" cy="34" r="3" fill="currentColor" />
+          </svg>
+        </div>
+        <div>
+          <h3>OralGuard AI</h3>
+          <p>v1.0 Beta</p>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          Home
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          Screening History
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Profile
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          Settings
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          About OralGuard
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Powered by AI-CDSS</p>
+        <p>National Oral Health Programme</p>
+      </div>
+    </aside>
+
+    <!-- Persistent Bottom Navigation Dock -->
+    <nav class="bottom-nav" id="main-bottom-nav">
+      <button class="nav-item active" data-screen="home" id="nav-btn-home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Home</span>
+      </button>
+
+
+
+      <button class="nav-item" data-screen="history" id="nav-history">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <span>History</span>
+      </button>
+      <button class="nav-item nav-item--scan" data-screen="scan" id="nav-scan">
+        <div class="nav-scan-wrapper">
+          <div class="nav-scan-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+          </div>
+          <span class="nav-scan-label">Scan</span>
+        </div>
+      </button>
+
+      <button class="nav-item" data-screen="dashboard" id="nav-dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9" rx="1" />
+          <rect x="14" y="3" width="7" height="5" rx="1" />
+          <rect x="14" y="12" width="7" height="9" rx="1" />
+          <rect x="3" y="16" width="7" height="5" rx="1" />
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-screen="dashboard" id="nav-dashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="app.js?v=3"></script>
+</body>
+
+</html>
