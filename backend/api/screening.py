@@ -11,12 +11,13 @@ Core endpoints for the screening workflow:
 import os
 import uuid
 import time
+import shutil
 from pathlib import Path
 from datetime import datetime
 
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from loguru import logger
 from PIL import Image
 import io
@@ -24,7 +25,7 @@ import io
 from database import get_db
 from config import settings
 from models.db_models import (
-    Screening, ScreeningImage, QuestionnaireResponse,
+    Screening, ScreeningImage, QuestionnaireResponse, DiagnosisReport,
     ScreeningStatus, LesionType, RiskLevel,
 )
 from models.schemas import (
@@ -498,5 +499,90 @@ async def list_screenings(
         })
 
     return {"screenings": items, "total": len(items)}
+
+
+@router.delete("/history/clear/all")
+async def clear_all_screenings(
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Clear all past screening history records and associated files.
+    """
+    try:
+        await db.execute(delete(DiagnosisReport))
+        await db.execute(delete(QuestionnaireResponse))
+        await db.execute(delete(ScreeningImage))
+        await db.execute(delete(Screening))
+        await db.commit()
+        _screening_cache.clear()
+
+        # Clean upload dir folders
+        upload_dir = Path(settings.UPLOAD_DIR)
+        if upload_dir.exists():
+            for item in upload_dir.iterdir():
+                if item.is_dir():
+                    shutil.rmtree(item, ignore_errors=True)
+
+        logger.info("All screening history cleared.")
+        return {"status": "success", "message": "All screening history cleared"}
+    except Exception as e:
+        logger.error(f"Failed to clear screening history: {e}")
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to clear history: {str(e)}")
+
+
+@router.delete("/history/{screening_id}")
+@router.delete("/{screening_id}")
+async def delete_screening(
+    screening_id: str,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Delete a single screening record and its associated data (images, questionnaire, report).
+    """
+    result = await db.execute(
+        select(Screening).where(Screening.id == screening_id)
+    )
+    screening = result.scalar_one_or_none()
+    if not screening:
+        raise HTTPException(status_code=404, detail="Screening not found")
+
+    try:
+        # Delete associated reports
+        await db.execute(
+            delete(DiagnosisReport).where(DiagnosisReport.screening_id == screening_id)
+        )
+
+        # Delete associated questionnaire responses
+        await db.execute(
+            delete(QuestionnaireResponse).where(QuestionnaireResponse.screening_id == screening_id)
+        )
+
+        # Delete associated image records
+        await db.execute(
+            delete(ScreeningImage).where(ScreeningImage.screening_id == screening_id)
+        )
+
+        # Delete the screening record
+        await db.delete(screening)
+        await db.commit()
+
+        _screening_cache.pop(screening_id, None)
+
+        # Remove screening upload directory
+        try:
+            save_dir = Path(settings.UPLOAD_DIR) / screening_id
+            if save_dir.exists():
+                shutil.rmtree(save_dir, ignore_errors=True)
+        except Exception as e:
+            logger.warning(f"Could not remove uploads for {screening_id}: {e}")
+
+        logger.info(f"Screening {screening_id} deleted successfully.")
+        return {"status": "success", "message": "Screening deleted successfully", "id": screening_id}
+    except Exception as e:
+        logger.error(f"Error deleting screening {screening_id}: {e}")
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not delete screening: {str(e)}")
+
 
 

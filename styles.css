@@ -2440,7 +2440,73 @@ img {
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: var(--radius-full);
-  align-self: flex-start;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.history-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.history-delete-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-md);
+  background: #FEF2F2;
+  color: #DC2626;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+}
+
+.history-delete-btn:hover {
+  background: #DC2626;
+  border-color: #DC2626;
+  color: #FFFFFF;
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
+
+.history-delete-btn:active {
+  transform: scale(0.95);
+}
+
+.history-delete-btn svg {
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+.history-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(220, 38, 38, 0.3);
+  border-top-color: #DC2626;
+  border-radius: 50%;
+  display: inline-block;
+  animation: histSpin 0.7s linear infinite;
+}
+
+@keyframes histSpin {
+  to { transform: rotate(360deg); }
+}
+
+.header-btn--danger {
+  color: #EF4444;
+}
+
+.header-btn--danger:hover {
+  background: #FEE2E2;
+  color: #DC2626;
 }
 
 .history-empty {

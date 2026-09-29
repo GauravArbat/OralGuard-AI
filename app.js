@@ -210,6 +210,7 @@
   const navHistory = document.getElementById('nav-history');
   const btnBackHistory = document.getElementById('btn-back-history');
   const btnRefreshHistory = document.getElementById('btn-refresh-history');
+  const btnClearHistory = document.getElementById('btn-clear-history');
   const historyList = document.getElementById('history-list');
   const navDashboard = document.getElementById('nav-dashboard');
   const btnBackDashboard = document.getElementById('btn-back-dashboard');
@@ -1018,6 +1019,7 @@
       items.forEach(item => {
         const card = document.createElement('div');
         card.className = 'history-item';
+        card.setAttribute('data-id', item.id);
         const dateStr = item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recent';
         const risk = (item.risk_level || 'low').toLowerCase();
 
@@ -1027,12 +1029,83 @@
             <div class="history-diag">${item.primary_diagnosis_display || item.primary_diagnosis}</div>
             <div class="history-date">${dateStr} • Confidence: ${Math.round((item.confidence || 0.85)*100)}%</div>
           </div>
-          <span class="history-badge risk--${risk}">${risk.toUpperCase()} (${item.risk_score || 15})</span>
+          <div class="history-item-actions">
+            <span class="history-badge risk--${risk}">${risk.toUpperCase()} (${item.risk_score || 15})</span>
+            <button class="history-delete-btn" type="button" title="Delete record" aria-label="Delete screening record">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"/>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                <line x1="10" y1="11" x2="10" y2="17"/>
+                <line x1="14" y1="11" x2="14" y2="17"/>
+              </svg>
+            </button>
+          </div>
         `;
+
         card.onclick = () => {
           currentScreeningId = item.id;
           fetchResults(item.id);
         };
+
+        const deleteBtn = card.querySelector('.history-delete-btn');
+        if (deleteBtn) {
+          deleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation(); // Prevent opening report
+            const confirmed = confirm('Are you sure you want to delete this screening record? This cannot be undone.');
+            if (!confirmed) return;
+
+            deleteBtn.disabled = true;
+            deleteBtn.innerHTML = '<span class="history-spinner"></span>';
+
+            try {
+              let res = await fetch(`${API_BASE}${API_PREFIX}/screening/${item.id}`, {
+                method: 'DELETE',
+              });
+              if (!res.ok) {
+                res = await fetch(`${API_BASE}${API_PREFIX}/screening/history/${item.id}`, {
+                  method: 'DELETE',
+                });
+              }
+              if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.detail || 'Failed to delete record');
+              }
+
+              // Animate out card smoothly
+              card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+              card.style.opacity = '0';
+              card.style.transform = 'translateX(25px) scale(0.96)';
+
+              setTimeout(() => {
+                card.remove();
+                if (!historyList.querySelector('.history-item')) {
+                  historyList.innerHTML = `
+                    <div class="history-empty">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      <p>${i18n[currentLanguage].noHistory}</p>
+                    </div>
+                  `;
+                }
+              }, 300);
+            } catch (err) {
+              deleteBtn.disabled = false;
+              deleteBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18"/>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                  <line x1="10" y1="11" x2="10" y2="17"/>
+                  <line x1="14" y1="11" x2="14" y2="17"/>
+                </svg>
+              `;
+              alert(`Could not delete record: ${err.message}`);
+            }
+          });
+        }
+
         historyList.appendChild(card);
       });
     } catch (err) {
@@ -1044,6 +1117,36 @@
   navHistory?.addEventListener('click', loadHistory);
   btnBackHistory?.addEventListener('click', () => showScreen('home'));
   btnRefreshHistory?.addEventListener('click', loadHistory);
+
+  btnClearHistory?.addEventListener('click', async () => {
+    const hasItems = historyList?.querySelector('.history-item');
+    if (!hasItems) {
+      alert('No screening records found to clear.');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete ALL screening history records? This cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const resp = await fetch(`${API_BASE}${API_PREFIX}/screening/history/clear/all`, {
+        method: 'DELETE',
+      });
+      if (!resp.ok) throw new Error('Failed to clear history');
+
+      historyList.innerHTML = `
+        <div class="history-empty">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <p>${i18n[currentLanguage].noHistory}</p>
+        </div>
+      `;
+    } catch (err) {
+      alert(`Could not clear history: ${err.message}`);
+    }
+  });
 
   // ── Dashboard Screen ──
   async function loadDashboard() {
