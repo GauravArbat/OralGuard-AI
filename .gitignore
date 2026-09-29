@@ -1,6 +1,4 @@
 # Model weights
-*.pt
-backend/model_weights/*.pt
 
 # Datasets
 backend/data/

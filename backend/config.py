@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
 
     # ── File Storage ──
-    UPLOAD_DIR: str = str(Path(__file__).parent / "uploads")
+    UPLOAD_DIR: str = os.environ.get("UPLOAD_DIR", str(Path(__file__).parent / "uploads"))
     MAX_IMAGE_SIZE_MB: int = 20
     ALLOWED_IMAGE_TYPES: list[str] = ["image/jpeg", "image/png", "image/heic", "image/webp"]
 
