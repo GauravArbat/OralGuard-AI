@@ -9,8 +9,10 @@ Orchestrates the 4-stage AI pipeline:
 """
 
 import time
+import gc
 import numpy as np
 import cv2
+import torch
 from PIL import Image
 from pathlib import Path
 from loguru import logger
@@ -214,6 +216,11 @@ class InferencePipeline:
             f"risk={fusion_result['risk_score']}/100) "
             f"in {processing_time}ms"
         )
+
+        # Free memory after inference (critical for Render free tier 512MB)
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
         return results
 

@@ -7,7 +7,10 @@ initializes the database, and configures CORS/middleware.
 
 import sys
 import os
+import gc
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -36,13 +39,17 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Database ready")
 
-    # Load AI models lazily on first request to conserve memory
-    logger.info("AI models will lazy-load on first request")
+    # Force garbage collection to free memory before serving requests
+    gc.collect()
+
+    # Load AI models lazily on first request to conserve memory on Render free tier (512MB)
+    logger.info("AI models will lazy-load on first request (memory conservation mode)")
 
     yield
 
-    # Shutdown
+    # Shutdown — release model memory
     logger.info("Shutting down OralGuard AI")
+    gc.collect()
 
 
 # ── FastAPI App ──
@@ -189,5 +196,6 @@ if __name__ == "__main__":
         port=port,
         reload=settings.DEBUG,
         log_level="info",
+        timeout_keep_alive=120,
     )
 

@@ -12,6 +12,8 @@ import os
 import uuid
 import time
 import shutil
+import gc
+import asyncio
 from pathlib import Path
 from datetime import datetime
 
@@ -119,9 +121,11 @@ async def upload_image(
     )
     db.add(image_record)
 
-    # Run AI pipeline
+    # Run AI pipeline in a thread pool so it doesn't block the async event loop
+    # (prevents Render worker timeouts / 502 errors on free tier)
     try:
-        pipeline_results = clinical_engine.process_image(
+        pipeline_results = await asyncio.to_thread(
+            clinical_engine.process_image,
             image=img,
             save_dir=save_dir,
         )
@@ -158,10 +162,14 @@ async def upload_image(
 
         await db.flush()
 
+        # Free memory after heavy AI processing (critical for 512MB Render free tier)
+        gc.collect()
+
     except Exception as e:
         logger.error(f"Pipeline failed for screening {screening_id}: {e}")
         screening.status = ScreeningStatus.FAILED
         await db.flush()
+        gc.collect()
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
     return ImageUploadResponse(

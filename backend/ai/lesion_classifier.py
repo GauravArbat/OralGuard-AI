@@ -149,7 +149,7 @@ class LesionClassifierService:
 
         if path and Path(path).exists():
             logger.info(f"Loading classification weights from: {path}")
-            state_dict = torch.load(path, map_location=self.device)
+            state_dict = torch.load(path, map_location=self.device, weights_only=True)
             self.model.load_state_dict(state_dict)
         else:
             logger.info("Using randomly initialized classification model (no weights)")
