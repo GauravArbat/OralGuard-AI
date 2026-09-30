@@ -9,6 +9,7 @@ Reference: Wu et al., "A high-order focus interaction model and
 oral ulcer dataset for oral ulcer segmentation" (Nature Portfolio)
 """
 
+import gc
 import numpy as np
 import torch
 import torch.nn as nn
@@ -216,6 +217,14 @@ class LesionSegmenterService:
         self.model.eval()
         self._loaded = True
         logger.info("Segmentation model loaded")
+
+    def unload(self):
+        """Unload HF-UNet model from memory to free RAM."""
+        self.model = None
+        self._loaded = False
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        gc.collect()
 
     def segment(self, image_tensor: np.ndarray) -> dict:
         """

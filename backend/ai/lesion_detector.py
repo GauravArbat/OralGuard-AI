@@ -6,6 +6,7 @@ Detects and localizes oral lesions in photographs using YOLOv8-m.
 Outputs bounding boxes around detected lesion regions.
 """
 
+import gc
 import numpy as np
 from pathlib import Path
 from loguru import logger
@@ -54,6 +55,12 @@ class LesionDetector:
 
         self._loaded = True
         logger.info("Lesion detection model loaded successfully")
+
+    def unload(self):
+        """Unload YOLO model from memory to free RAM."""
+        self.model = None
+        self._loaded = False
+        gc.collect()
 
     def detect(self, image: np.ndarray) -> dict:
         """

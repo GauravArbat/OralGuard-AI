@@ -6,6 +6,7 @@ Classifies detected oral lesions into primary categories
 (Aphthous Ulcer vs OSCC vs Other) with subtype classification.
 """
 
+import gc
 import numpy as np
 import torch
 import torch.nn as nn
@@ -158,6 +159,14 @@ class LesionClassifierService:
         self.model.eval()
         self._loaded = True
         logger.info("Classification model loaded")
+
+    def unload(self):
+        """Unload classification model from memory to free RAM."""
+        self.model = None
+        self._loaded = False
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        gc.collect()
 
     def classify(self, image_tensor: np.ndarray) -> dict:
         """

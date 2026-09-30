@@ -15,32 +15,15 @@ import torch
 from loguru import logger
 
 
-def generate_segmentation_heatmap(
-    segmenter_model,
-    image_tensor: np.ndarray,
+def generate_heatmap_from_prob_map(
+    prob_map: np.ndarray,
     original_image: np.ndarray,
 ) -> tuple:
     """
-    Generate heatmap using ONLY the trained HF-UNet model output.
-
-    Steps:
-      1. Run model → get raw sigmoid probability map
-      2. Threshold at 0.5 to get binary mask (what model considers lesion)
-      3. Morphological cleanup (remove tiny noise dots)
-      4. Keep only significant connected components
-      5. Create smooth heatmap from cleaned mask
-      6. Overlay on original image
+    Generate smooth attention heatmap from a raw probability map (0-1).
+    Pure OpenCV & NumPy — zero tensor operations or model dependencies.
     """
     try:
-        device = next(segmenter_model.parameters()).device
-        tensor = torch.from_numpy(image_tensor).unsqueeze(0).float().to(device)
-
-        with torch.no_grad():
-            raw_pred = segmenter_model(tensor)
-
-        # Raw sigmoid probability map from model
-        prob_map = raw_pred[0, 0].cpu().numpy()  # (256, 256), values in [0, 1]
-
         h, w = original_image.shape[:2]
 
         # ── Step 1: Binary mask at model's trained threshold ──
@@ -113,6 +96,27 @@ def generate_segmentation_heatmap(
         h, w = original_image.shape[:2]
         empty = np.zeros((h, w), dtype=np.float32)
         return empty, original_image.copy()
+
+
+def generate_segmentation_heatmap(
+    segmenter_model,
+    image_tensor: np.ndarray,
+    original_image: np.ndarray,
+) -> tuple:
+    """Run model inference to get probability map, then create heatmap."""
+    try:
+        device = next(segmenter_model.parameters()).device
+        tensor = torch.from_numpy(image_tensor).unsqueeze(0).float().to(device)
+
+        with torch.no_grad():
+            raw_pred = segmenter_model(tensor)
+
+        prob_map = raw_pred[0, 0].cpu().numpy()
+        return generate_heatmap_from_prob_map(prob_map, original_image)
+    except Exception as e:
+        logger.error(f"Segmentation heatmap inference failed: {e}")
+        h, w = original_image.shape[:2]
+        return np.zeros((h, w), dtype=np.float32), original_image.copy()
 
 
 def overlay_heatmap(

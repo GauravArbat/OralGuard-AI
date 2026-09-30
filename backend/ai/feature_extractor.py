@@ -6,6 +6,7 @@ Extracts 8 clinical visual features from the lesion image
 using a multi-task ResNet-50 with custom classification heads.
 """
 
+import gc
 import numpy as np
 import torch
 import torch.nn as nn
@@ -149,6 +150,15 @@ class FeatureExtractorService:
         self.model.to(self.device)
         self.model.eval()
         self._loaded = True
+        logger.info("Feature extraction model loaded")
+
+    def unload(self):
+        """Unload feature extractor model from memory to free RAM."""
+        self.model = None
+        self._loaded = False
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        gc.collect()
 
     def extract(self, image_tensor: np.ndarray) -> dict:
         """
