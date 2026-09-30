@@ -75,7 +75,7 @@ async def upload_image(
     # Quality score
     quality = image_preprocessor.compute_quality_score(img)
 
-    if quality["total"] < 50:
+    if quality["total"] < 35:
         raise HTTPException(
             status_code=422,
             detail={

@@ -77,14 +77,21 @@ class ImagePreprocessor:
         # Fix EXIF orientation
         img = self._fix_orientation(img)
 
-        # Minimum resolution check
+        # Minimum resolution check & auto-upscaling for small or cropped images
         w, h = img.size
-        if w < 320 or h < 320:
+        if w < 64 or h < 64:
             return {
                 "valid": False,
-                "message": f"Image too small ({w}x{h}). Minimum 320x320 required.",
+                "message": f"Image too small ({w}x{h}). Minimum 64x64 required.",
                 "image": None,
             }
+
+        # Auto-upscale images smaller than 320px (e.g. 256x256 dataset crops) so models receive optimal input
+        if w < 320 or h < 320:
+            scale = max(320.0 / w, 320.0 / h)
+            new_w = max(320, int(w * scale))
+            new_h = max(320, int(h * scale))
+            img = img.resize((new_w, new_h), Image.LANCZOS)
 
         return {"valid": True, "message": "Image accepted", "image": img}
 
@@ -104,11 +111,13 @@ class ImagePreprocessor:
         elif max_dim >= 1280:
             resolution_score = 20
         elif max_dim >= 720:
-            resolution_score = 15
+            resolution_score = 16
         elif max_dim >= 480:
-            resolution_score = 10
+            resolution_score = 14
+        elif max_dim >= 250:
+            resolution_score = 12
         else:
-            resolution_score = 5
+            resolution_score = 10
 
         # 2. Focus/Sharpness score (0-25) — Laplacian variance
         focus_score = self._compute_focus_score(arr)
