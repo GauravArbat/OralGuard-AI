@@ -8,9 +8,8 @@ uvicorn[standard]==0.30.0
 python-multipart==0.0.9
 
 # AI / ML (CPU-only for Render free tier)
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.4.0+cpu
-torchvision==0.19.0+cpu
+torch>=2.2.0
+torchvision>=0.17.0
 timm==1.0.8
 huggingface_hub
 albumentations==1.4.0
