@@ -37,7 +37,11 @@ class Settings(BaseSettings):
 
     # ── AI Model Paths ──
     MODEL_DIR: str = str(Path(__file__).parent / "model_weights")
-    DETECTION_MODEL_PATH: str = str(Path(__file__).parent / "model_weights" / "yolov8m.pt")
+    DETECTION_MODEL_PATH: str = str(
+        (Path(__file__).parent / "model_weights" / "yolov8m.pt")
+        if (Path(__file__).parent / "model_weights" / "yolov8m.pt").exists()
+        else (Path(__file__).parent / "yolov8m.pt")
+    )
     CLASSIFICATION_MODEL_PATH: str = str(Path(__file__).parent / "model_weights" / "classification_model.pt")
     SEGMENTATION_MODEL_PATH: str = str(Path(__file__).parent / "model_weights" / "segmentation_model.pt")
     FEATURE_MODEL_PATH: str = str(Path(__file__).parent / "model_weights" / "feature_model.pt")
