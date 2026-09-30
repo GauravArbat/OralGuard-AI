@@ -8,9 +8,15 @@ initializes the database, and configures CORS/middleware.
 import sys
 import os
 import gc
+
+# Configure environment limits to prevent OpenMP collisions, deadlocks, and config write warnings on Render
+os.environ["YOLO_CONFIG_DIR"] = "/tmp/Ultralytics"
+os.environ["YOLO_VERBOSE"] = "False"
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
 from contextlib import asynccontextmanager
 from pathlib import Path
 

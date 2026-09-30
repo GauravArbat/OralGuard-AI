@@ -13,11 +13,20 @@ from loguru import logger
 
 from config import settings
 
-try:
-    from ultralytics import YOLO
-except ImportError:
-    YOLO = None
-    logger.warning("ultralytics not installed; detection model unavailable.")
+YOLO = None
+
+def get_yolo_class():
+    global YOLO
+    if YOLO is None:
+        try:
+            import os
+            os.environ.setdefault("YOLO_CONFIG_DIR", "/tmp/Ultralytics")
+            from ultralytics import YOLO as _YOLO
+            YOLO = _YOLO
+        except Exception as e:
+            logger.warning(f"ultralytics import failed: {e}")
+            YOLO = None
+    return YOLO
 
 
 class LesionDetector:
@@ -39,19 +48,20 @@ class LesionDetector:
 
     def load(self, model_path: str = None):
         """Load the YOLOv8 model weights."""
-        if YOLO is None:
-            logger.error("Cannot load detector: ultralytics not installed")
+        yolo_cls = get_yolo_class()
+        if yolo_cls is None:
+            logger.warning("ultralytics not available; detection will use CV fallback")
             return
 
         path = model_path or settings.DETECTION_MODEL_PATH
 
         if path and Path(path).exists():
             logger.info(f"Loading detection model from: {path}")
-            self.model = YOLO(path)
+            self.model = yolo_cls(path)
         else:
             # Load pretrained YOLOv8-m as base (for fine-tuning)
             logger.info("Loading base YOLOv8-m model (pretrained COCO)")
-            self.model = YOLO("yolov8m.pt")
+            self.model = yolo_cls("yolov8m.pt")
 
         self._loaded = True
         logger.info("Lesion detection model loaded successfully")

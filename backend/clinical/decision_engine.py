@@ -13,7 +13,6 @@ This is the main entry point for the clinical workflow.
 from loguru import logger
 from PIL import Image
 
-from ai.pipeline import inference_pipeline
 from clinical.questionnaire import (
     generate_questionnaire,
     filter_dependent_questions,
@@ -80,8 +79,10 @@ class ClinicalDecisionEngine:
         },
     }
 
-    def __init__(self):
-        self.pipeline = inference_pipeline
+    @property
+    def pipeline(self):
+        from ai.pipeline import inference_pipeline
+        return inference_pipeline
 
     def process_image(self, image: Image.Image, save_dir: str = None) -> dict:
         """
