@@ -6,10 +6,24 @@
   'use strict';
 
   // ── Configuration ──
-  const API_BASE = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
-    ? window.location.origin
-    : 'http://localhost:8000';
+  // Automatically determine API backend:
+  // - If running on a local static server (Live Server on port 5500, 3000, etc.) or file:// protocol, route to local FastAPI at http://localhost:8000
+  // - If running on deployed production (e.g. Render https://oralguard-ai.onrender.com) or directly via FastAPI (http://localhost:8000), use current origin
+  const isLocalStaticServer = (
+    window.location.protocol === 'file:' ||
+    (
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+      window.location.port !== '' &&
+      window.location.port !== '8000'
+    )
+  );
+
+  const API_BASE = isLocalStaticServer
+    ? 'http://localhost:8000'
+    : (window.location.origin && window.location.origin !== 'null' ? window.location.origin : '');
   const API_PREFIX = '/api/v1';
+
+  console.log(`[OralGuard AI] Initialized API Base: ${API_BASE}`);
 
   // ── State ──
   let currentLanguage = 'en';

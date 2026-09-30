@@ -101,7 +101,7 @@ frontend_dir = Path(__file__).parent.parent
 async def serve_index():
     index_path = frontend_dir / "index.html"
     if index_path.exists():
-        return FileResponse(index_path)
+        return FileResponse(index_path, headers={"Cache-Control": "no-cache, must-revalidate"})
     return {"message": "OralGuard AI Backend running. index.html not found."}
 
 
@@ -109,7 +109,7 @@ async def serve_index():
 async def serve_css():
     css_path = frontend_dir / "styles.css"
     if css_path.exists():
-        return FileResponse(css_path, media_type="text/css")
+        return FileResponse(css_path, media_type="text/css", headers={"Cache-Control": "no-cache, must-revalidate"})
     return FileResponse(frontend_dir / "index.html")
 
 
@@ -117,7 +117,7 @@ async def serve_css():
 async def serve_js():
     js_path = frontend_dir / "app.js"
     if js_path.exists():
-        return FileResponse(js_path, media_type="application/javascript")
+        return FileResponse(js_path, media_type="application/javascript", headers={"Cache-Control": "no-cache, must-revalidate"})
     return FileResponse(frontend_dir / "index.html")
 
 
