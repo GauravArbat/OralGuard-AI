@@ -499,12 +499,133 @@
     }
   }
 
+  // ── Questionnaire Clinical Translations (EN & HI) ──
+  const qTranslations = {
+    location: {
+      question_hi: 'छाला या घाव मुंह में कहाँ स्थित है?',
+      rationale_hi: 'स्थान महत्वपूर्ण है: एफ्थस छाले गैर-केराटिनाइज्ड सतह पर होते हैं; तालु या मसूड़े पर छाले हर्पीज का संकेत हो सकते हैं; जीभ के किनारे या मुंह के फर्श पर घाव कैंसर का उच्च जोखिम रखते हैं।',
+      options_hi: {
+        labial_mucosa: 'होंठ के अंदरूनी हिस्से पर',
+        buccal_mucosa: 'गाल के अंदरूनी हिस्से पर',
+        lateral_tongue: 'जीभ के किनारे (बगल में)',
+        ventral_tongue: 'जीभ के नीचे',
+        dorsal_tongue: 'जीभ के ऊपर',
+        floor_of_mouth: 'मुंह के निचले तलवे पर (जीभ के नीचे)',
+        soft_palate: 'पीछे का कोमल तालु (Soft palate)',
+        hard_palate: 'मुंह की छत (कठोर तालु - Hard palate)',
+        gingiva: 'मसूड़े (Gums)',
+        retromolar: 'पिछले दाढ़ के पीछे का हिस्सा',
+      },
+    },
+    habits: {
+      question_hi: 'क्या आपको इनमें से कोई आदत या जोखिम कारक है?',
+      rationale_hi: 'तंबाकू, सुपारी/पान मसाला और शराब कैंसर के मुख्य जोखिम कारक हैं; नुकीले दांत या नकली बत्तीसी से छाले हो सकते हैं।',
+      options_hi: {
+        smoking: 'बीड़ी / सिगरेट / तंबाकू धूम्रपान',
+        smokeless_tobacco: 'गुटखा, खैनी, जर्दा, मावा (धुआंरहित तंबाकू)',
+        betel_nut: 'सुपारी, पान या पान मसाला चबाना',
+        alcohol: 'शराब (मदिरा) का सेवन',
+        sharp_tooth_denture: 'नुकीला/टूटा दांत या नकली बत्तीसी की रगड़',
+        cheek_lip_biting: 'आदतवश गाल या होंठ काटना',
+        none: 'इनमें से कोई नहीं',
+      },
+    },
+    medical_conditions: {
+      question_hi: 'क्या आपको इनमें से कोई स्वास्थ्य समस्या है?',
+      rationale_hi: 'खून की कमी (एनीमिया), विटामिन बी12/आयरन की कमी और आंतों की बीमारी से बार-बार मुंह में छाले होते हैं।',
+      options_hi: {
+        diabetes: 'मधुमेह (डायबिटीज)',
+        hiv: 'एचआईवी / एड्स / प्रतिरक्षा विकार',
+        autoimmune: 'ऑटोइम्यून बीमारी (ल्यूपस, गठिया, बेहेट)',
+        ibd: 'आंतों की सूजन की बीमारी (IBD/कोलाइटिस)',
+        celiac: 'सीलिएक रोग (ग्लूटेन एलर्जी)',
+        anemia: 'खून की कमी (एनीमिया) / विटामिन B12 / फोलेट की कमी',
+        immunosuppressed: 'इम्यूनोसप्रेसिव दवाएं ले रहे हैं',
+        cancer_history: 'पूर्व में कैंसर का इतिहास',
+        none: 'इनमें से कोई नहीं',
+      },
+    },
+    medications: {
+      question_hi: 'क्या आप इनमें से कोई दवा ले रहे हैं?',
+      rationale_hi: 'कुछ दवाएं (जैसे निकोरांडिल, पेनकिलर/NSAIDs, मेथोट्रेक्सेट) मुंह में घाव या छाले पैदा कर सकती हैं।',
+      options_hi: {
+        nsaids: 'दर्द निवारक दवाएं (ब्रूफेन, एस्पिरिन आदि)',
+        methotrexate: 'मेथोट्रेक्सेट (Methotrexate)',
+        nicorandil: 'निकोरांडिल (हृदय की दवा)',
+        bisphosphonates: 'हड्डियों की दवा (Bisphosphonates)',
+        immunosuppressants: 'स्टेरॉयड / इम्यूनोसप्रेसेंट दवाएं',
+        chemotherapy: 'कैंसर रोधी / कीमोथेरेपी दवाएं',
+        antihypertensives: 'बीपी / हृदय की दवाएं',
+        none: 'इनमें से कोई नहीं',
+      },
+    },
+    onset_duration_days: {
+      question_hi: 'यह छाला या घाव पहली बार कितने दिन पहले दिखाई दिया था?',
+      rationale_hi: 'अवधि महत्वपूर्ण है: सामान्य छाले 7-14 दिनों में ठीक हो जाते हैं; 3 सप्ताह से अधिक पुराना घाव चिंताजनक हो सकता है।',
+    },
+    recurrent: {
+      question_hi: 'क्या आपको पहले भी ऐसे छाले हुए हैं?',
+      rationale_hi: 'बार-बार छाले होना रीकरेंट एफ्थस स्टोमैटाइटिस (RAS) का पुख्ता प्रमाण है।',
+    },
+    pain_present: {
+      question_hi: 'क्या छाले या घाव में दर्द होता है?',
+      rationale_hi: 'एफ्थस छाले अत्यधिक दर्दनाक होते हैं। बिना दर्द वाला पुराना घाव कैंसर का संदेह पैदा करता है।',
+    },
+    pain_level: {
+      question_hi: 'दर्द की तीव्रता बताएं (1 = बहुत हल्का, 10 = असहनीय दर्द)',
+      rationale_hi: 'दर्द की तीव्रता से परेशानी का स्तर और उचित उपचार का निर्धारण होता है।',
+    },
+    vesicle_preceded: {
+      question_hi: 'क्या छाला बनने से पहले कोई फफोला या दाना (Blister) निकला था?',
+      rationale_hi: 'फफोले का फूटना हर्पीज संक्रमण का संकेत देता है, सामान्य छाले का नहीं।',
+    },
+    ulcer_count: {
+      question_hi: 'वर्तमान में मुंह में कितने छाले या घाव हैं?',
+      rationale_hi: 'छालों की संख्या प्रकार (माइनर, मेजर, हर्पेटिफॉर्म) निर्धारित करने में मदद करती है।',
+      options_hi: {
+        '1': '1 (एकल छाला)',
+        '2-3': '2 से 3',
+        '4-10': '4 से 10',
+        '10+': '10 से अधिक (अनेक)',
+      },
+    },
+    ulcer_size_mm: {
+      question_hi: 'सबसे बड़े छाले का अनुमानित आकार क्या है?',
+      rationale_hi: '10 मिमी से छोटे छाले माइनर होते हैं, 10 मिमी से बड़े मेजर छाले होते हैं।',
+      options_hi: {
+        under_5: '5 मिमी से कम (बहुत छोटा)',
+        '5_to_10': '5 से 10 मिमी (मटर के दाने जितना)',
+        '10_to_20': '10 से 20 मिमी (बड़ा छाला)',
+        over_20: '20 मिमी से अधिक (अत्यधिक बड़ा)',
+      },
+    },
+    dysphagia: {
+      question_hi: 'क्या खाना चबाने या निगलने में दर्द या कठिनाई होती है?',
+      rationale_hi: 'निगलने में लगातार दर्द घाव की गंभीरता या गहराई को दर्शाता है।',
+    },
+    induration_present: {
+      question_hi: 'क्या छूने पर घाव के किनारे कठोर या सख्त महसूस होते हैं?',
+      rationale_hi: 'कठोरता (Induration) कैंसर का प्रमुख चेतावनी संकेत (Red Flag) है। सामान्य छाले मुलायम होते हैं।',
+    },
+    healing_trend: {
+      question_hi: 'क्या छाला ठीक होने (छोटा होने) के संकेत दिखा रहा है?',
+      rationale_hi: 'आकार में लगातार बढ़ना या न भरना कैंसर का गंभीर चेतावनी संकेत है।',
+      options_hi: {
+        healing: 'हाँ, यह छोटा और ठीक हो रहा है',
+        stable: 'कोई बदलाव नहीं (वैसा ही है)',
+        growing: 'यह और बड़ा होता जा रहा है',
+        unsure: 'पक्का पता नहीं',
+      },
+    },
+  };
+
   // ── Render Question ──
   function renderQuestion(idx) {
     if (!questionnaireList || idx >= questionnaireList.length) return;
 
     const q = questionnaireList[idx];
     const t = i18n[currentLanguage];
+    const qTrans = qTranslations[q.id];
 
     // Progress
     const total = questionnaireList.length;
@@ -515,8 +636,10 @@
 
     // Category & Texts
     qCategoryTag.textContent = q.category.replace('_', ' ').toUpperCase();
-    qQuestionText.textContent = q.question;
-    qRationaleText.textContent = q.clinical_rationale || 'Essential clinical discriminator.';
+    qQuestionText.textContent = (currentLanguage === 'hi' && qTrans?.question_hi) ? qTrans.question_hi : q.question;
+    qRationaleText.textContent = (currentLanguage === 'hi' && qTrans?.rationale_hi)
+      ? qTrans.rationale_hi
+      : (q.clinical_rationale || 'Essential clinical discriminator.');
 
     // Nav button state
     btnQPrev.disabled = idx === 0;
@@ -543,7 +666,6 @@
         pill.onclick = () => {
           questionnaireAnswers[q.id] = opt.value;
           renderQuestion(idx);
-          // Auto advance on single choice after brief delay
           setTimeout(() => advanceQuestion(), 250);
         };
         qOptionsContainer.appendChild(pill);
@@ -551,10 +673,11 @@
     } else if (q.question_type === 'select' && q.options) {
       q.options.forEach(opt => {
         const isSelected = currentVal === opt.value;
+        const optLabel = (currentLanguage === 'hi' && qTrans?.options_hi?.[opt.value]) ? qTrans.options_hi[opt.value] : opt.label;
         const pill = document.createElement('div');
         pill.className = `q-option-pill ${isSelected ? 'selected' : ''}`;
         pill.innerHTML = `
-          <span>${opt.label}</span>
+          <span>${optLabel}</span>
           <div class="q-option-check">${isSelected ? '✓' : ''}</div>
         `;
         pill.onclick = () => {
@@ -565,41 +688,46 @@
         qOptionsContainer.appendChild(pill);
       });
     } else if (q.question_type === 'multiselect' && q.options) {
-      // Multiselect — stored as an array; "none" deselects everything else
+      // Multiselect — stored as an array; handles "none" logic and multi-selection
       const selectedArr = Array.isArray(currentVal) ? currentVal : [];
+      const hasNoneOption = q.options.some(o => o.value === 'none');
+
       q.options.forEach(opt => {
         const isSelected = selectedArr.includes(opt.value);
+        const optLabel = (currentLanguage === 'hi' && qTrans?.options_hi?.[opt.value]) ? qTrans.options_hi[opt.value] : opt.label;
         const pill = document.createElement('div');
         pill.className = `q-option-pill multiselect-pill ${isSelected ? 'selected' : ''}`;
         pill.innerHTML = `
-          <span>${opt.label}</span>
+          <span>${optLabel}</span>
           <div class="q-option-check">${isSelected ? '✓' : ''}</div>
         `;
         pill.onclick = () => {
           let arr = Array.isArray(questionnaireAnswers[q.id]) ? [...questionnaireAnswers[q.id]] : [];
           if (opt.value === 'none') {
-            // "None" clears all others and toggles itself
             arr = arr.includes('none') ? [] : ['none'];
           } else {
-            // Remove 'none' when selecting a real option
             arr = arr.filter(v => v !== 'none');
             if (arr.includes(opt.value)) {
               arr = arr.filter(v => v !== opt.value);
             } else {
               arr.push(opt.value);
             }
-            if (arr.length === 0) arr = ['none'];
+            if (arr.length === 0 && hasNoneOption) {
+              arr = ['none'];
+            }
           }
           questionnaireAnswers[q.id] = arr;
           renderQuestion(idx);
-          // No auto-advance for multiselect — user clicks Next when done
         };
         qOptionsContainer.appendChild(pill);
       });
+
       // Helper hint
       const hint = document.createElement('p');
       hint.className = 'q-multiselect-hint';
-      hint.textContent = currentLanguage === 'hi' ? 'एक से अधिक विकल्प चुन सकते हैं' : 'Select all that apply, then tap Next';
+      hint.textContent = currentLanguage === 'hi'
+        ? 'एक से अधिक विकल्प चुन सकते हैं, फिर "अगला" दबाएं'
+        : 'Select all that apply, then tap Next';
       qOptionsContainer.appendChild(hint);
     } else if (q.question_type === 'scale') {
       const scaleWrap = document.createElement('div');
@@ -631,6 +759,23 @@
   }
 
   function advanceQuestion() {
+    const q = questionnaireList[currentQuestionIdx];
+    if (q) {
+      const val = questionnaireAnswers[q.id];
+      if (q.question_type === 'multiselect') {
+        const hasNone = q.options && q.options.some(o => o.value === 'none');
+        if (!val || (Array.isArray(val) && val.length === 0)) {
+          if (hasNone) {
+            questionnaireAnswers[q.id] = ['none'];
+          } else if (q.required) {
+            // Highlight container with shake effect if nothing selected
+            qOptionsContainer.classList.add('q-shake-error');
+            setTimeout(() => qOptionsContainer.classList.remove('q-shake-error'), 500);
+            return;
+          }
+        }
+      }
+    }
     if (currentQuestionIdx < questionnaireList.length - 1) {
       currentQuestionIdx++;
       renderQuestion(currentQuestionIdx);

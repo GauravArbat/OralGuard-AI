@@ -268,19 +268,61 @@ class ClinicalDecisionEngine:
                 "Alcohol cessation or reduction strongly recommended.",
             ])
 
-        # ── Risk factor specific advice ──
+        # ── Risk factor & lifestyle specific advice ──
         responses = questionnaire_responses or {}
+        habits = responses.get("habits", [])
+        if isinstance(habits, str):
+            habits = [habits]
+        med_conditions = responses.get("medical_conditions", [])
+        if isinstance(med_conditions, str):
+            med_conditions = [med_conditions]
+        meds = responses.get("medications", [])
+        if isinstance(meds, str):
+            meds = [meds]
+        raw_loc = responses.get("location", [])
+        locations = raw_loc if isinstance(raw_loc, list) else ([raw_loc] if raw_loc else [])
 
-        if responses.get("tobacco_use") in ("smoking_current", "smokeless_current"):
+        # Tobacco / Betel cessation
+        has_tobacco = "smoking" in habits or "smokeless_tobacco" in habits or responses.get("tobacco_use") in ("smoking_current", "smokeless_current")
+        if has_tobacco:
             recommendations.append(
                 "Tobacco cessation counseling strongly recommended. "
                 "Contact National Tobacco Quitline: 1800-11-2356."
             )
 
-        if responses.get("betel_quid_use"):
+        if "betel_nut" in habits or responses.get("betel_quid_use"):
             recommendations.append(
                 "Stop betel nut/paan masala use immediately — "
-                "this is a proven oral cancer risk factor."
+                "areca nut is an established Group 1 oral carcinogen."
+            )
+
+        # Dental Trauma advice
+        if "sharp_tooth_denture" in habits or "cheek_lip_biting" in habits:
+            recommendations.append(
+                "Dental evaluation advised to smooth sharp tooth cusps or adjust ill-fitting dentures "
+                "to relieve ongoing mechanical trauma."
+            )
+
+        # High-risk location alert
+        if any(loc in ("lateral_tongue", "floor_of_mouth") for loc in locations):
+            if risk_level in ("high", "urgent", "medium"):
+                recommendations.append(
+                    "High-risk site precaution: Lesions on the lateral tongue and floor of mouth "
+                    "require careful clinical follow-up and biopsy if persistent >2-3 weeks."
+                )
+
+        # Systemic medical conditions advice
+        if any(c in med_conditions for c in ("anemia", "celiac", "ibd")):
+            recommendations.append(
+                "Hematological & GI evaluation: For recurrent aphthous stomatitis, testing for serum ferritin, "
+                "Vitamin B12, folate levels, and celiac antibodies (anti-tTG) is recommended."
+            )
+
+        # Medication-induced ulceration advice
+        if any(m in meds for m in ("nicorandil", "methotrexate", "nsaids", "bisphosphonates")):
+            recommendations.append(
+                "Medication review: Discuss your current medications with your prescribing physician to rule out "
+                "drug-induced oral ulceration (e.g. Nicorandil, Methotrexate, or NSAIDs)."
             )
 
         return recommendations

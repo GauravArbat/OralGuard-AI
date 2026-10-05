@@ -318,17 +318,60 @@ def generate_differential_diagnosis(
             else:
                 score -= 10
 
-        # Trauma
+        # Trauma & Habits (support both multiselect 'habits' and 'trauma_history')
+        habits = responses.get("habits", [])
+        if isinstance(habits, str):
+            habits = [habits]
+        trauma = responses.get("trauma_history", "none")
+        has_trauma = (
+            trauma != "none"
+            or "sharp_tooth_denture" in habits
+            or "cheek_lip_biting" in habits
+        )
         if condition["key_features"].get("trauma_history"):
-            trauma = responses.get("trauma_history", "none")
-            if trauma != "none":
-                score += 15
-                supporting.append(f"Trauma history: {trauma}")
+            if has_trauma:
+                score += 20
+                cause = trauma if trauma != "none" else ("denture/sharp tooth" if "sharp_tooth_denture" in habits else "cheek/lip biting")
+                supporting.append(f"Trauma etiology identified ({cause})")
             else:
                 score -= 10
 
+        # Anatomical Location (Aphthae: non-keratinized; Herpes: keratinized; OSCC: lateral tongue / floor of mouth)
+        raw_loc = responses.get("location", [])
+        locations = raw_loc if isinstance(raw_loc, list) else ([raw_loc] if raw_loc else [])
+        non_keratinized = {"labial_mucosa", "buccal_mucosa", "ventral_tongue", "floor_of_mouth", "soft_palate"}
+        keratinized = {"hard_palate", "gingiva", "dorsal_tongue"}
+        high_risk_oscc_sites = {"lateral_tongue", "floor_of_mouth", "ventral_tongue", "retromolar"}
+
+        has_non_keratinized = any(loc in non_keratinized for loc in locations)
+        has_keratinized = any(loc in keratinized for loc in locations)
+        has_high_risk_site = any(loc in high_risk_oscc_sites for loc in locations)
+
+        if condition_id == "recurrent_aphthous_stomatitis":
+            if has_non_keratinized:
+                score += 15
+                supporting.append("Located on non-keratinized mucosa (classic aphthous presentation)")
+            if has_keratinized and not has_non_keratinized:
+                score -= 20
+                opposing.append("Ulcer located on keratinized mucosa (hard palate/gums - atypical for aphthae)")
+
+        if condition_id == "recurrent_herpes":
+            if has_keratinized:
+                score += 25
+                supporting.append("Ulcer on keratinized mucosa (hard palate/gingiva - classic site for intraoral herpes)")
+            elif has_non_keratinized and not has_keratinized:
+                score -= 15
+                opposing.append("Non-keratinized site (atypical for recurrent herpes)")
+
+        if condition_id == "oscc":
+            if has_high_risk_site:
+                score += 20
+                supporting.append("High-risk site for OSCC (lateral border of tongue / floor of mouth)")
+
         # Systemic features
         systemic = responses.get("systemic_symptoms", [])
+        if isinstance(systemic, str):
+            systemic = [systemic]
         if condition_id == "behcet_disease":
             if "genital_ulcers" in systemic:
                 score += 25
@@ -341,15 +384,54 @@ def generate_differential_diagnosis(
                 score += 20
                 supporting.append("Skin lesions present")
 
-        # Tobacco / betel
-        if condition_id == "oscc":
-            tobacco = responses.get("tobacco_use", "none")
-            if tobacco in ("smoking_current", "smokeless_current"):
-                score += 12
-                supporting.append("Active tobacco use")
-            if responses.get("betel_quid_use"):
+        # Medical Conditions (Anemia, Celiac, IBD, Autoimmune)
+        med_conditions = responses.get("medical_conditions", [])
+        if isinstance(med_conditions, str):
+            med_conditions = [med_conditions]
+        if condition_id == "recurrent_aphthous_stomatitis":
+            predisposing = [c for c in med_conditions if c in ("anemia", "celiac", "ibd")]
+            if predisposing:
                 score += 15
-                supporting.append("Betel quid/paan masala use")
+                supporting.append(f"Underlying systemic condition predisposing to aphthae ({', '.join(predisposing)})")
+        if condition_id == "behcet_disease" and "autoimmune" in med_conditions:
+            score += 15
+            supporting.append("Autoimmune history predisposing to aphthae")
+
+        # Medications (Nicorandil, Methotrexate, NSAIDs, Bisphosphonates)
+        meds = responses.get("medications", [])
+        if isinstance(meds, str):
+            meds = [meds]
+        if "nicorandil" in meds:
+            if condition_id == "persistent_traumatic_ulcer":
+                score += 25
+                supporting.append("Taking Nicorandil (notoriously causes persistent deep oral ulcerations)")
+        if any(m in meds for m in ("methotrexate", "chemotherapy")):
+            if condition_id in ("persistent_traumatic_ulcer", "recurrent_aphthous_stomatitis"):
+                supporting.append("Taking cytotoxic/immunosuppressive drug predisposing to oral ulceration")
+
+        # Tobacco, Betel nut & Alcohol Habits (unified 'habits' + legacy fields)
+        if condition_id == "oscc":
+            tobacco_legacy = responses.get("tobacco_use", "none")
+            has_tobacco = (
+                "smoking" in habits
+                or "smokeless_tobacco" in habits
+                or tobacco_legacy in ("smoking_current", "smokeless_current")
+            )
+            has_betel = "betel_nut" in habits or bool(responses.get("betel_quid_use"))
+            has_alcohol = "alcohol" in habits or responses.get("alcohol_use") in ("moderate", "heavy")
+
+            if has_tobacco:
+                score += 15
+                supporting.append("Tobacco exposure (major oncogenic risk factor)")
+            if has_betel:
+                score += 20
+                supporting.append("Betel quid / paan masala / areca nut chewing (IARC Group 1 carcinogen)")
+            if has_alcohol:
+                score += 10
+                supporting.append("Regular alcohol consumption")
+            if (has_tobacco or has_betel) and has_alcohol:
+                score += 10
+                supporting.append("Synergistic tobacco/areca nut + alcohol multiplier")
 
         # Growth pattern
         healing = responses.get("healing_trend", "")

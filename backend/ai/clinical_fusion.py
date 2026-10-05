@@ -260,28 +260,65 @@ class ClinicalFusionModel:
             risk += self.RISK_WEIGHTS["vesicle_preceded"]
             factors.append("Vesicle preceded ulcer (suggests herpes)")
 
-        # Tobacco
+        # Location risk (from questionnaire responses)
+        raw_loc = responses.get("location", [])
+        locations = raw_loc if isinstance(raw_loc, list) else ([raw_loc] if raw_loc else [])
+        high_risk_locs = {"lateral_tongue", "floor_of_mouth", "ventral_tongue", "retromolar"}
+        if any(loc in high_risk_locs for loc in locations):
+            risk += 12
+            factors.append("High-risk anatomical site (lateral tongue / floor of mouth)")
+        elif any(loc in {"labial_mucosa", "buccal_mucosa"} for loc in locations):
+            risk += self.RISK_WEIGHTS.get("non_keratinized_site", -3)
+            factors.append("Ulcer on non-keratinized labial/buccal mucosa")
+
+        # Habits & Risk Factors (multiselect 'habits' + legacy fields)
+        habits = responses.get("habits", [])
+        if isinstance(habits, str):
+            habits = [habits]
         tobacco = responses.get("tobacco_use", "none")
-        if tobacco == "smoking_current":
+
+        if "smoking" in habits or tobacco == "smoking_current":
             risk += self.RISK_WEIGHTS["smoking_current"]
-            factors.append("Current smoker")
-        elif tobacco == "smokeless_current":
+            factors.append("Active tobacco smoking")
+        if "smokeless_tobacco" in habits or tobacco == "smokeless_current":
             risk += self.RISK_WEIGHTS["smokeless_tobacco_current"]
-            factors.append("Current smokeless tobacco user")
-
-        # Betel quid / paan
-        if responses.get("betel_quid_use", False):
+            factors.append("Current smokeless tobacco user (high OSCC risk)")
+        if "betel_nut" in habits or responses.get("betel_quid_use", False):
             risk += self.RISK_WEIGHTS["betel_quid"]
-            factors.append("Betel quid / paan masala use (high OSCC risk)")
+            factors.append("Betel quid / paan masala use (Group 1 carcinogen)")
 
-        # Alcohol
         alcohol = responses.get("alcohol_use", "none")
-        if alcohol == "heavy":
+        if "alcohol" in habits or alcohol == "heavy":
             risk += self.RISK_WEIGHTS["alcohol_heavy"]
             factors.append("Heavy alcohol consumption")
         elif alcohol == "moderate":
             risk += self.RISK_WEIGHTS["alcohol_moderate"]
             factors.append("Moderate alcohol consumption")
+
+        has_oral_carcinogen = ("smoking" in habits or "smokeless_tobacco" in habits or "betel_nut" in habits or tobacco in ("smoking_current", "smokeless_current"))
+        if has_oral_carcinogen and ("alcohol" in habits or alcohol in ("moderate", "heavy")):
+            risk += 10
+            factors.append("Synergistic tobacco/areca nut + alcohol multiplier")
+
+        # Medical Conditions
+        med_conditions = responses.get("medical_conditions", [])
+        if isinstance(med_conditions, str):
+            med_conditions = [med_conditions]
+        if any(c in med_conditions for c in ("anemia", "celiac", "ibd")):
+            factors.append("Nutritional deficiency/celiac/IBD history (classic aphthous trigger)")
+        if any(c in med_conditions for c in ("hiv", "immunosuppressed")):
+            risk += 10
+            factors.append("Immunocompromised status")
+        if "cancer_history" in med_conditions:
+            risk += 15
+            factors.append("Personal cancer history")
+
+        # Medications
+        meds = responses.get("medications", [])
+        if isinstance(meds, str):
+            meds = [meds]
+        if any(m in meds for m in ("nicorandil", "methotrexate", "nsaids", "bisphosphonates")):
+            factors.append("Taking medication known to cause oral ulcerations")
 
         # Induration
         if responses.get("induration_present", False):
