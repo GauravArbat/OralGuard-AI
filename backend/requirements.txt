@@ -10,14 +10,14 @@ python-multipart==0.0.9
 # AI / ML (CPU-only for Render free tier)
 torch>=2.2.0
 torchvision>=0.17.0
-timm==1.0.8
+timm>=1.0.8
 huggingface_hub
-albumentations==1.4.0
-opencv-python-headless==4.10.0.84
-Pillow==10.4.0
-numpy==1.26.4
-scikit-learn==1.5.0
-xgboost==2.1.0
+albumentations>=1.4.0
+opencv-python-headless>=4.10.0.84
+Pillow>=10.4.0
+numpy>=1.26.0
+scikit-learn>=1.5.0
+xgboost>=2.1.0
 ultralytics>=8.0.0
 
 # Database
@@ -25,7 +25,7 @@ sqlalchemy==2.0.31
 aiosqlite==0.22.1
 
 # Auth & Security
-python-jose[cryptography]==3.3.0
+PyJWT>=2.8.0
 passlib[bcrypt]==1.7.4
 pydantic[email]==2.8.0
 pydantic-settings==2.3.0
